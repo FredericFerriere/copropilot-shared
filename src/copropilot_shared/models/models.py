@@ -3,7 +3,10 @@ from typing import List
 
 from pydantic import BaseModel
 from datetime import date
-from decimal import Decimal
+
+class typeDocument(str, enum.Enum):
+    CONVOCATION = "convocation AG"
+    PROCES_VERBAL = "procès-verbal AG"
 
 class typeAssemblee(str, enum.Enum):
     ORDINAIRE = "ordinaire"
@@ -53,7 +56,7 @@ class AssembleeGenerale(BaseModel):
 
 class Resolution(BaseModel):
     id: int | None = None
-    assemblee_id: int
+    ordre_du_jour_id: int
     numero: str
     libelle: str
     regle_majorite: str
