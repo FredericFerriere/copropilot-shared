@@ -11,6 +11,7 @@ dependencies = [
     "sqlmodel>=0.0.21",
     "psycopg2-binary>=2.9",
     "sqlalchemy>=2.0.50",
+    "dotenv>=0.9.9",
 ]
 
 [build-system]
