@@ -3,8 +3,7 @@ from typing import Optional
 import datetime
 import uuid
 
-from sqlmodel import SQLModel, Field
-from sqlalchemy import Column, String
+from sqlmodel import SQLModel, Field, Relationship
 
 
 class typeDocument(str, enum.Enum):
@@ -79,6 +78,32 @@ class LigneEtatFinancier(SQLModel, table=True):
 class ContenuDocument(SQLModel, table=True):
     __tablename__ = "contenus_documents"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    document_id: uuid.UUID 
+    document_id: uuid.UUID
     type_contenu: str
     contenu_id: uuid.UUID
+
+
+class User(SQLModel, table=True):
+    __tablename__ = "users"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    email: str = Field(unique=True, index=True)
+    name: str
+    hashed_password: str
+    created_at: Optional[datetime.datetime] = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
+
+
+class Document(SQLModel, table=True):
+    __tablename__ = "documents"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    filename: str
+    file_path: str
+    category: str = Field(index=True)
+    uploaded_by: Optional[uuid.UUID] = Field(default=None, foreign_key="users.id", index=True)
+    uploaded_at: Optional[datetime.datetime] = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
+    size: int
+    description: Optional[str] = None
+    processing_status: str = Field(default="pending")
+
+    user: Optional[User] = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Document.uploaded_by]", "lazy": "joined"}
+    )
