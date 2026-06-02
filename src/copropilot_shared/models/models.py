@@ -79,6 +79,6 @@ class LigneEtatFinancier(SQLModel, table=True):
 class ContenuDocument(SQLModel, table=True):
     __tablename__ = "contenus_documents"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    document_id: uuid.UUID = Field(default=None, foreign_key="documents.id")
+    document_id: uuid.UUID 
     type_contenu: str
-    contenu_id: uuid.UUID = Field(default=None, foreign_key="contenus.id")
+    contenu_id: uuid.UUID
