@@ -1,80 +1,82 @@
 import enum
-from typing import List
+from typing import Optional
+import datetime
+from sqlmodel import SQLModel, Field
+from sqlalchemy import Column, String
 
-from pydantic import BaseModel
-from datetime import date
 
 class typeDocument(str, enum.Enum):
     CONVOCATION = "convocation AG"
     PROCES_VERBAL = "procès-verbal AG"
+
 
 class typeAssemblee(str, enum.Enum):
     ORDINAIRE = "ordinaire"
     EXTRAORDINAIRE = "extraordinaire"
     MIXTE = "mixte"
 
+
 class typeContenu(str, enum.Enum):
     ORDRE_DU_JOUR = "ordre_du_jour"
     ETAT_FINANCIER = "etat_financier"
 
-class Copropriete(BaseModel):
-    id: int | None = None
+
+class Copropriete(SQLModel, table=True):
+    __tablename__ = "coproprietes"
+    id: Optional[int] = Field(default=None, primary_key=True)
     nom: str
     adresse: str
 
-    model_config = {"from_attributes": True}
 
-class Exercice(BaseModel):
-    id: int | None = None
-    copropriete_id: int
-    date_debut: date
-    date_fin: date
+class AssembleeGenerale(SQLModel, table=True):
+    __tablename__ = "assemblees_generales"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    date: datetime.date
+    copropriete_id: int = Field(default=None, foreign_key="coproprietes.id")
+    type: str = Field(default=None, sa_column=Column(String))
 
-    model_config = {"from_attributes": True}
 
-class LigneEtatFinancier(BaseModel):
-    id: int | None = None
-    etat_financier_id: int
-    numero_compte: str
-    montant_cents: int | str
+class OrdreDuJour(SQLModel, table=True):
+    __tablename__ = "ordres_du_jour"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    assemblee_id: int = Field(default=None, foreign_key="assemblees_generales.id")
 
-    model_config = {"from_attributes": True}
 
-class EtatFinancier(BaseModel):
-    id: int | None = None
-    exercice_id: int
-    lignes_etat_financier: List[LigneEtatFinancier] = []
-    model_config = {"from_attributes": True}
-
-class AssembleeGenerale(BaseModel):
-    id: int | None = None
-    date: date
-    copropriete_id: int
-    type: typeAssemblee
-
-    model_config = {"from_attributes": True}
-
-class Resolution(BaseModel):
-    id: int | None = None
-    ordre_du_jour_id: int
+class Resolution(SQLModel, table=True):
+    __tablename__ = "resolutions"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    ordre_du_jour_id: int = Field(foreign_key="ordres_du_jour.id")
     numero: str
     libelle: str
     regle_majorite: str
     detail_resolution: str
 
-    model_config = {"from_attributes": True}
 
-class OrdreDuJour(BaseModel):
-    id: int | None = None
-    assemblee_id: int
-    resolutions: List[Resolution] = []
+class Exercice(SQLModel, table=True):
+    __tablename__ = "exercices"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    copropriete_id: int = Field(default=None, foreign_key="coproprietes.id")
+    date_debut: datetime.date
+    date_fin: datetime.date
 
-    model_config = {"from_attributes": True}
 
-class ContenuDocument(BaseModel):
-    id: int | None = None
+class EtatFinancier(SQLModel, table=True):
+    __tablename__ = "etats_financiers"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    exercice_id: int = Field(default=None, foreign_key="exercices.id")
+
+
+class LigneEtatFinancier(SQLModel, table=True):
+    __tablename__ = "lignes_etats_financiers"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    etat_financier_id: int = Field(foreign_key="etats_financiers.id")
+    numero_compte: str
+    montant_cents: int
+
+
+class ContenuDocument(SQLModel, table=True):
+    __tablename__ = "contenus_documents"
+    id: Optional[int] = Field(default=None, primary_key=True)
     document_id: int
-    type_contenu: typeContenu
+    type_contenu: str = Field(default=None, sa_column=Column(String))
     contenu_id: int
-
-    model_config = {"from_attributes": True}
