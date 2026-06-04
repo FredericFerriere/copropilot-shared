@@ -13,7 +13,9 @@ from .models import (
     typeAssemblee,
     typeContenu,
     CompteGestionGeneral,
-    LigneCompteGestionGeneral
+    LigneCompteGestionGeneral,
+    CompteGestionOperationsCourantes,
+    LigneCompteGestionOperationsCourantes,
 )
 
 __all__ = [
@@ -31,5 +33,7 @@ __all__ = [
     "typeAssemblee",
     "typeContenu",
     "CompteGestionGeneral",
-    "LigneCompteGestionGeneral"
+    "LigneCompteGestionGeneral",
+    "CompteGestionOperationsCourantes",
+    "LigneCompteGestionOperationsCourantes",
 ]

@@ -46,7 +46,7 @@ class OrdreDuJour(SQLModel, table=True):
 class Resolution(SQLModel, table=True):
     __tablename__ = "resolutions"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    ordre_du_jour_id: uuid.UUID = Field(foreign_key="ordres_du_jour.id")
+    odj_id: uuid.UUID = Field(foreign_key="ordres_du_jour.id")
     numero: str
     libelle: str
     regle_majorite: str
@@ -70,19 +70,35 @@ class EtatFinancier(SQLModel, table=True):
 class LigneEtatFinancier(SQLModel, table=True):
     __tablename__ = "lignes_etats_financiers"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    etat_financier_id: uuid.UUID = Field(foreign_key="etats_financiers.id")
+    ef_id: uuid.UUID = Field(foreign_key="etats_financiers.id")
     numero_compte: str
     montant_cents: int
+
 
 class CompteGestionGeneral(SQLModel, table=True):
     __tablename__ = "comptes_gestion_general"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     exercice_id: uuid.UUID = Field(default=None, foreign_key="exercices.id")
 
+
 class LigneCompteGestionGeneral(SQLModel, table=True):
     __tablename__ = "lignes_comptes_gestion_general"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    compte_gestion_general_id: uuid.UUID = Field(foreign_key="comptes_gestion_general.id")
+    cgg_id: uuid.UUID = Field(foreign_key="comptes_gestion_general.id")
+    numero_compte: str
+    montant_cents: int
+
+
+class CompteGestionOperationsCourantes(SQLModel, table=True):
+    __tablename__ = "comptes_gestion_operations_courantes"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    exercice_id: uuid.UUID = Field(default=None, foreign_key="exercices.id")
+
+
+class LigneCompteGestionOperationsCourantes(SQLModel, table=True):
+    __tablename__ = "lignes_comptes_gestion_operations_courantes"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    cgoc_id: uuid.UUID = Field(foreign_key="comptes_gestion_operations_courantes.id")
     numero_compte: str
     montant_cents: int
 
