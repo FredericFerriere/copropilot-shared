@@ -74,6 +74,18 @@ class LigneEtatFinancier(SQLModel, table=True):
     numero_compte: str
     montant_cents: int
 
+class CompteGestionGeneral(SQLModel, table=True):
+    __tablename__ = "comptes_gestion_general"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    exercice_id: uuid.UUID = Field(default=None, foreign_key="exercices.id")
+
+class LigneCompteGestionGeneral(SQLModel, table=True):
+    __tablename__ = "lignes_comptes_gestion_general"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    compte_gestion_general_id: uuid.UUID = Field(foreign_key="comptes_gestion_general.id")
+    numero_compte: str
+    montant_cents: int
+
 
 class ContenuDocument(SQLModel, table=True):
     __tablename__ = "contenus_documents"

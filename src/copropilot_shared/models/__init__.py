@@ -12,6 +12,8 @@ from .models import (
     typeDocument,
     typeAssemblee,
     typeContenu,
+    CompteGestionGeneral,
+    LigneCompteGestionGeneral
 )
 
 __all__ = [
@@ -28,4 +30,6 @@ __all__ = [
     "typeDocument",
     "typeAssemblee",
     "typeContenu",
+    "CompteGestionGeneral",
+    "LigneCompteGestionGeneral"
 ]
