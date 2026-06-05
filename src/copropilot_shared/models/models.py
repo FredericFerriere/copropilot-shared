@@ -99,8 +99,18 @@ class LigneCompteGestionOperationsCourantes(SQLModel, table=True):
     __tablename__ = "lignes_comptes_gestion_operations_courantes"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     cgoc_id: uuid.UUID = Field(foreign_key="comptes_gestion_operations_courantes.id")
+    position: int
     numero_compte: str
     montant_cents: int
+    est_sous_total: bool = False
+
+
+class AgregationLigneCompteGestionOperationsCourantes(SQLModel, table=True):
+    __tablename__ = "agregations_lignes_comptes_gestion_operations_courantes"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    parent_id: uuid.UUID = Field(foreign_key="lignes_comptes_gestion_operations_courantes.id")
+    feuille_id: uuid.UUID = Field(foreign_key="lignes_comptes_gestion_operations_courantes.id")
+    profondeur: int
 
 
 class ContenuDocument(SQLModel, table=True):
