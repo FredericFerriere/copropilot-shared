@@ -17,6 +17,9 @@ from .models import (
     CompteGestionOperationsCourantes,
     LigneCompteGestionOperationsCourantes,
     AgregationLigneCompteGestionOperationsCourantes,
+    CompteGestionTravaux,
+    LigneCompteGestionTravaux,
+    AgregationLigneCompteGestionTravaux,
 )
 
 __all__ = [
@@ -38,4 +41,7 @@ __all__ = [
     "CompteGestionOperationsCourantes",
     "LigneCompteGestionOperationsCourantes",
     "AgregationLigneCompteGestionOperationsCourantes",
+    "CompteGestionTravaux",
+    "LigneCompteGestionTravaux",
+    "AgregationLigneCompteGestionTravaux"
 ]

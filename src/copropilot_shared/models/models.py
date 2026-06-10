@@ -113,6 +113,32 @@ class AgregationLigneCompteGestionOperationsCourantes(SQLModel, table=True):
     profondeur: int
 
 
+class CompteGestionTravaux(SQLModel, table=True):
+    __tablename__ = "comptes_gestion_travaux"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    exercice_id: uuid.UUID = Field(default=None, foreign_key="exercices.id")
+
+
+class LigneCompteGestionTravaux(SQLModel, table=True):
+    __tablename__ = "lignes_comptes_gestion_travaux"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    cgt_id: uuid.UUID = Field(foreign_key="comptes_gestion_travaux.id")
+    position: int
+    libelle: str
+    depenses_votees_n: int
+    depenses_realisees_n: int
+    provisions_appelees_n: int
+    est_sous_total: bool = False
+
+
+class AgregationLigneCompteGestionTravaux(SQLModel, table=True):
+    __tablename__ = "agregations_lignes_comptes_gestion_travaux"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    parent_id: uuid.UUID = Field(foreign_key="lignes_comptes_gestion_travaux.id")
+    feuille_id: uuid.UUID = Field(foreign_key="lignes_comptes_gestion_travaux.id")
+    profondeur: int
+
+
 class ContenuDocument(SQLModel, table=True):
     __tablename__ = "contenus_documents"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
