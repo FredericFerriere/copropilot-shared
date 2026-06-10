@@ -131,12 +131,53 @@ class LigneCompteGestionTravaux(SQLModel, table=True):
     est_sous_total: bool = False
 
 
+class EtatSoldeCoproprietaire(SQLModel, table=True):
+    __tablename__ = "etats_soldes_coproprietaires"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    exercice_id: uuid.UUID = Field(default=None, foreign_key="exercices.id")
+
+
+class LigneEtatSoldeCoproprietaire(SQLModel, table=True):
+    __tablename__ = "lignes_etats_soldes_coproprietaires"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    esc_id: uuid.UUID = Field(foreign_key="etats_soldes_coproprietaires.id")
+    nom: str
+    solde_debiteur_debut: int
+    solde_crediteur_debut: int
+    debit: int
+    credit: int
+    solde_fin_exercice: int
+    solde_charges: int
+    solde_debiteur_approbation: int
+    solde_crediteur_approbation: int
+            
+
 class AgregationLigneCompteGestionTravaux(SQLModel, table=True):
     __tablename__ = "agregations_lignes_comptes_gestion_travaux"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     parent_id: uuid.UUID = Field(foreign_key="lignes_comptes_gestion_travaux.id")
     feuille_id: uuid.UUID = Field(foreign_key="lignes_comptes_gestion_travaux.id")
     profondeur: int
+
+
+class ReleveDepenses(SQLModel, table=True):
+    __tablename__ = "releves_depenses"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    exercice_id: uuid.UUID = Field(default=None, foreign_key="exercices.id")
+
+
+class LigneReleveDepenses(SQLModel, table=True):
+    __tablename__ = "lignes_releves_depenses"
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    rd_id: uuid.UUID = Field(foreign_key="releves_depenses.id")
+    position: int
+    categorie: str
+    date_paiement: datetime.date
+    descriptif_detaille: str
+    montant: int
+    tva: int
+    recuperable: int
+    deductible: int
 
 
 class ContenuDocument(SQLModel, table=True):
