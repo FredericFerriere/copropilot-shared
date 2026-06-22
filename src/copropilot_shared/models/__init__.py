@@ -1,4 +1,5 @@
 from .models import (
+    WaitlistEntry,
     Copropriete,
     AssembleeGenerale,
     Exercice,
@@ -27,6 +28,7 @@ from .models import (
 )
 
 __all__ = [
+    "WaitlistEntry",
     "Copropriete",
     "AssembleeGenerale",
     "Exercice",

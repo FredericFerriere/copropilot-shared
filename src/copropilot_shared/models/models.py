@@ -188,6 +188,17 @@ class ContenuDocument(SQLModel, table=True):
     contenu_id: uuid.UUID
 
 
+class WaitlistEntry(SQLModel, table=True):
+    __tablename__ = "waitlist_entries"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    first_name: str = Field(max_length=100)
+    email: str = Field(unique=True, index=True)
+    consent: bool = Field(default=False)
+    created_at: Optional[datetime.datetime] = Field(
+        default_factory=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
+
+
 class User(SQLModel, table=True):
     __tablename__ = "users"
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
